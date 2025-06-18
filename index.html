@@ -1,0 +1,942 @@
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript">google.load("jquery", "1.3.2");</script>
+
+<style type="text/css">
+  #bannerimage {
+    width: 100%;
+    background-image: url("./resources/images/dog1.png");
+    height: 300px;
+    background-color: rgb(255, 255, 255);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+    body {
+        font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-weight:300;
+        font-size:18px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 1100px;
+    }
+
+    h1, h2 {
+        font-weight:300;
+    }
+
+    .disclaimerbox {
+        background-color: #eee;
+        border: 1px solid #eeeeee;
+        border-radius: 10px ;
+        -moz-border-radius: 10px ;
+        -webkit-border-radius: 10px ;
+        padding: 20px;
+    }
+
+    video.header-vid {
+        height: 140px;
+        border: 1px solid black;
+        border-radius: 10px ;
+        -moz-border-radius: 10px ;
+        -webkit-border-radius: 10px ;
+    }
+
+    img.header-img {
+        height: 140px;
+        border: 1px solid black;
+        border-radius: 10px ;
+        -moz-border-radius: 10px ;
+        -webkit-border-radius: 10px ;
+    }
+
+    img.rounded {
+        border: 1px solid #eeeeee;
+        border-radius: 10px ;
+        -moz-border-radius: 10px ;
+        -webkit-border-radius: 10px ;
+    }
+
+    a:link,a:visited
+    {
+        color: #1367a7;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #208799;
+    }
+
+    td.dl-link {
+        height: 160px;
+        text-align: center;
+        font-size: 22px;
+    }
+
+    .layered-paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+        box-shadow:
+                0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+                5px 5px 0 0px #fff, /* The second layer */
+                5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+                10px 10px 0 0px #fff, /* The third layer */
+                10px 10px 1px 1px rgba(0,0,0,0.35), /* The third layer shadow */
+                15px 15px 0 0px #fff, /* The fourth layer */
+                15px 15px 1px 1px rgba(0,0,0,0.35), /* The fourth layer shadow */
+                20px 20px 0 0px #fff, /* The fifth layer */
+                20px 20px 1px 1px rgba(0,0,0,0.35), /* The fifth layer shadow */
+                25px 25px 0 0px #fff, /* The fifth layer */
+                25px 25px 1px 1px rgba(0,0,0,0.35); /* The fifth layer shadow */
+        margin-left: 10px;
+        margin-right: 45px;
+    }
+
+
+    .layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+        box-shadow:
+                0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+                5px 5px 0 0px #fff, /* The second layer */
+                5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+                10px 10px 0 0px #fff, /* The third layer */
+                10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
+        margin-top: 5px;
+        margin-left: 10px;
+        margin-right: 30px;
+        margin-bottom: 5px;
+    }
+
+    .vert-cent {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    hr
+    {
+        border: 0;
+        height: 1.5px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    }
+</style>
+
+<html>
+  <head>
+        <title>Hamilton-Jacobi Reachability Analysis for Hybrid Systems with Controlled and Forced Transitions</title>
+        <meta property="og:title" content="Factored 3D" />
+  </head>
+
+  <head>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <!--
+    <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    -->          
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <script type="text/javascript"
+      src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+  </head>
+
+  <body>
+    <div id="bannerimage"></div>
+    <br>
+    <center>
+    <span style="font-size:42px">Hamilton-Jacobi Reachability Analysis for Hybrid Systems with Controlled and Forced Transitions</span>
+    </center>
+
+    <br><br>
+      <table align=center width=900px>
+       <tr>
+        <td align=center width=100px>
+        <center>
+        <span style="font-size:20px"><a href="https://javierborquez.github.io/">Javier Borquez*</a></span>
+        </center>
+        </td>  
+
+        <td align=center width=100px>
+        <center>
+        <span style="font-size:20px"><a href="https://www.psrobotics.tech/index.html">Shuang Peng*</a></span>
+        </center>
+        </td>
+
+        <td align=center width=100px>
+        <center>
+        <span style="font-size:20px">Yiyu Chen*</span>
+        </center>
+        </td>
+
+        <td align=center width=100px>
+        <center>
+        <span style="font-size:20px">Quan Nguyen*</span>
+        </center>
+        </td>      
+           
+        <td align=center width=100px>
+        <center>
+        <span style="font-size:20px"><a href="https://smlbansal.github.io/">Somil Bansal*</a></span>
+        </center>
+        </td>
+
+
+     </tr>
+    </table>
+
+    <br>
+    <table align=center width=700px>
+       <tr>
+        <td align=center width=100px>
+        <center>
+        <span>*University of Southern California</span>
+        </center>
+        </td>	       
+      </tr>
+    </table>
+    <br>
+    <center>
+      <span style="font-size:20px">To be presented at Robotics: Science and Systems 2024</span>
+      </center>
+    <br>
+       
+    <table align=center width=500px>
+      <tr>
+        <td align=center width=100px><center><span style="font-size:20px">
+          <a href="https://arxiv.org/pdf/2309.10893.pdf">[pdf]</a></span>
+        </center></td>
+            <!--
+            <td align=center width=100px><center><span style="font-size:20px">
+              <a href="">[bibtex]</a></span>
+            </center></td>-->  
+
+            <td align=center width=100px><center><span style="font-size:20px">
+              <a href="https://github.com/JavierBorquez/hj_hybrid_reachability">[source code]</a></span>
+          </center></td>          
+      </tr>
+    </table>    
+        
+    <br>
+  <!--  
+  <table align=center>
+              <tr>
+                  <td width=1000>
+                    <center>
+                      <iframe width="560" height="315" src="https://www.youtube.com/embed/odl88srx2iI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                  </center>
+                  </td>
+              </tr>
+            </table>
+            -->
+          <hr>
+    <center><h1>Abstract</h1></center>
+
+            <p align='justify'>
+              Hybrid dynamical systems with non-linear dynamics are one of the most general modeling tools for representing robotic systems, especially contact-rich systems. 
+              However, providing guarantees regarding the safety or performance of such hybrid systems can still prove to be a challenging problem because it requires simultaneous reasoning about continuous state evolution and discrete mode switching. 
+              In this work, we address this problem by extending classical Hamilton-Jacobi (HJ) reachability analysis, a formal verification method for continuous non-linear dynamics in the presence of bounded inputs and disturbances, to hybrid dynamical systems. 
+              Our framework can compute reachable sets for hybrid systems consisting of multiple discrete modes, each with its own set of non-linear continuous dynamics, discrete transitions that can be directly commanded or forced by a discrete control input, while still accounting for control bounds and adversarial disturbances in the state evolution. 
+              Along with the reachable set, the proposed framework also provides an optimal continuous and discrete controller to ensure system safety.
+              We demonstrate our framework in simulation on an aircraft collision avoidance problem, as well as on a real-world testbed to solve the optimal mode planning problem for a quadruped with multiple gaits.
+            </p>
+<br>
+<br>
+<hr>
+        <center><h1>Problem Formulation</h1></center>
+        
+        <p align='justify'>Consider a hybrid dynamical system with a finite set of discrete modes \(Q = \{q_1, q_2, ..., q_N\}\), connected through controlled or forced switches. We also refer to \(q_i\) as the discrete state of the system.
+        </p>          
+        <table align=center width=400px>
+            <tr>
+              <td width=640px>
+                <center>
+                    <a href="./resources/images/general_hyb.png"><img src ="./resources/images/general_hyb.png"></img></href></a><br> 
+                </center>
+              </td>
+            </tr>              
+        </table>
+
+
+        <p align='justify'>Let \(x \in X \subset \mathbb{R}^{n_x}\) be the continuous state of the system, \( u \in U \subset \mathbb{R}^{n_u}\) be the continuous control input, and \(d \in D \subset \mathbb{R}^{n_d}\) be the continuous disturbance in the system. In each discrete mode \(q_i \in Q\), the continuous state evolves according to the following dynamics:
+        </p>
+
+        <p align='center'>\(\dot{x} = f_i(x, u, d)\)</p>
+
+
+
+        <p align='justify'></p>as long as \(x \in S_i \subset X\), where \(S_i\) is the valid operation domain for mode \(q_i\). 
+
+        <p align='justify'>\(q_i\) also has discrete control switches \(\sigma_{ij}\) that allow controlled transition into another discrete mode \(q_{j}\), where \(j \in \{j_1,j_2, ...,j_n\} \subset \{1, 2, ..., N\}\). 
+        Note that the number of discrete modes the system can transition into (that is, \(n\)) may vary across different \(q_i\).
+        As \(x\) approaches \({S_i}^C\) (denoted \(x \to {S_i}^C\)), the system must take one of the forced control switches, \(\varsigma_{ik}\).
+        This leads to a forced transition into another discrete modes \(q_{k}\) 
+        where \(k \in \{k_1,k_2,...,k_m\} \subset \{1, 2, ..., N\}\).
+        Each discrete transition from \(q_i\) to \(q_j\), whether controlled or forced, might lead to a state reset \(x^+ = R_{ij}(x)\), where \(x\) is the state before the transition, \(x^+\) is the state after the transition.
+        </p>
+        <p align='justify'>Our key objective in this work is to compute the Backward Reachable Tube (BRT) of this hybrid dynamical system, defined as the set of initial discrete modes and continuous states \((x,q)\) of the system for which the agent acting optimally and under worst-case disturbances will eventually reach a target set \(\mathcal{L}\) within the time horizon \([t, T]\). Mathematically, the BRT is defined as:</p>
+
+        <p align='center'>\(\mathcal{V}(t)=\{(x_0, q_0): \forall d(\cdot), \exists u(\cdot), \sigma(\cdot), \varsigma(\cdot), \exists s \in [t, T], x(s) \in \mathcal{L}\}\)
+        </p>
+
+        <p align='justify'>
+        where \(x(s)\) denotes the (continuous) state of the system at time \(s\), starting from state \(x_0\) and discrete mode \(q_0\) under continuous control profile \(u(\cdot)\), discrete control switch profile \(\sigma(\cdot)\), forced control switch profile \(\varsigma(\cdot)\), and disturbance \(d(\cdot)\).
+        Along with the BRT, we are interested in finding the optimal discrete and continuous control inputs that steer the system to the target set.
+        Conversely, if \(\mathcal{L}\) represents the set of undesirable states for the system (such as obstacles for a navigation robot), we are interested in computing the BRT with the role of control and disturbance switched, i.e., finding the set of initial states from which getting into \(\mathcal{L}\) is unavoidable, despite best control effort.
+        </p>
+
+
+
+
+        <hr>
+        <center><h1>Theorem I</h1></center>
+
+        <p align='justify'>
+        The core contribution of this work is Theorem I, an extension of the classical HJ reachability framework to hybrid dynamical systems with controlled and forced transitions, as well as state resets.
+        </p>
+        <p align='justify'>     
+        For a hybrid dynamical system, the value function \(V(x, q_i, t)\) that captures the BRT for an implicit target function \(l(x)\) is given by solving the following constrained VI:
+        </p>
+        <p align='justify'> 
+        If \(x \in S_i\):
+        </p>
+        <p align='center'>  
+        \begin{multline}
+        \min\{l(x)-V(x, q_i, t), \min_{\sigma_{ij}}V(R_{ij}(x), q_{j}, t) - V(x, q_i, t), D_{t}V(x, q_i, t)+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d)\} = 0, 
+        \end{multline}
+        </p>
+        <p align='justify'> 
+        and if \(x \in S_i^C\):
+        </p>
+        <p align='center'> 
+        \begin{equation} \label{eqn:froced_transition_valfunc}
+        V(x, q_i, t) =\min_{\varsigma_{ik}}V(R_{ik}(x), q_{k}, t)
+        \end{equation}
+        </p>
+        <p align='justify'>  
+        With terminal time condition:
+        </p>
+        <p align='center'>  
+        \begin{equation}
+        V(x, q_i, T) = l(x) 
+        \end{equation}
+        </p>
+
+        <br>
+        <br>
+        <p align='justify'><strong>Numerical implementation</strong>: We now present an approximate numerical algorithm that can be used to calculate the value function in Theorem 1. 
+        It builds upon the value function calculation for the classical HJI-VI , which is solved using currently available level set methods [1]. 
+        Specifically, the value function is computed over a discretized state-space grid and propagated in time using a small timestep \(\delta\).
+        After each propagation step, the value function is updated for all \((x,q)\) using Theorem I, until the time horizon \(T\) is reached. 
+        </p> 
+
+        <table align=center width=480px>
+          <tr>
+              <td width=640px>
+                <center>
+                    <a href="resources\images\algorithm.png"><img src ="resources\images\algorithm.png"></img></href></a><br> 
+              </center>
+              </td>
+            </tr>
+        </table>
+
+        <br>
+ 
+
+        <!-- <center><h1>Proof</h1></center>
+
+        <p align='justify'>
+        We start with an analogous formulation to HJ reachability with a target function \(l(x)\) such that the target set is defined as its sub-zero level set, \(\mathcal{L} = \{(x) : l(x)\leq 0\}\). 
+        The BRT seeks to find all states that could enter \(\mathcal{L}\) at any point within the time horizon. This is computed by finding the minimum distance to \(\mathcal{L}\) over time.
+        </p>
+
+        <p align='justify'>
+        The value function is defined as the cost incurred under optimal discrete and continuous controls that minimizes distance to the target and optimal disturbances that maximizes it. 
+        We first consider the case when the state belongs to the interior of the domain \(S_i\).
+        The value function is given as:
+        </p>
+
+
+        <p align='center'>
+        \(V(x, q_i, t) = \max_{d \in D} \min_{u \in U} \min_{\sigma_{ij}}\min_{s \in[t, T]} l(x(s))\)
+        </p>
+        <p align='justify'>
+        With terminal time condition given by:
+        </p>        
+        <p align='center'>
+        \(V(x, q_i, T) = l(x)\)
+        </p> 
+
+        <p align='justify'>
+        The optimal decision making for discrete transitions is pictorially shown in the figure below.
+        </p> 
+        
+        <table align=center width=600px>
+          <tr>
+            <td width=640px>
+              <center>
+                  <a href="./resources/images/proof_diag.png"><img src ="./resources/images/proof_diag.png"></img></href></a><br> 
+              </center>
+            </td>
+          </tr>              
+      </table>
+
+      <p align='justify'>
+      The discrete transitions are shown in green arrows and continuous control flow are indicated by purple trajectories.
+      We also add a ''dummy'' discrete transition, \(\sigma_{ii}\), that keeps the system in the current discrete mode.
+      By definition,
+      the overall value function is given by the minimum cost across all these possible trajectories of the system.
+      From here, we consider two different cases:
+      </p>
+      <br>
+      <p align='justify'>
+      <b>Case 1</b>: If the system switches to a new discrete mode \(j^*\), the continuous state immediately transitions to \(R_{ij^*}\). 
+      In this case, the optimal cost incurred by the system from the new state \((R_{ij^*}(x), q_{j^*})\) is, by definition, given as \(V(R_{ij^*}(x), q_{j^*}, t)\). 
+      Thus, the optimal cost across all possible discrete transitions is given as:
+      </p>
+      <br>
+      <p align='center'>
+      \(V(x, q_i, t) =\min_{\sigma_{ij}}V(R_{ij}(x), q_{j}, t)\)
+      </p>
+      <br>
+      <p align='justify'>
+      <b>Case 2</b>: The system evolves in the same mode \(q_i\), i.e., it takes the dummy switch \(\sigma_{ii}\). 
+      In this case, for a small time step \(\delta\) and using the dynamic programming principle for the cost function, we have:
+      </p>
+      <br>
+      <p align='center'>
+      \begin{align} \label{eqn:cont_flow}
+      V(x, q_i, t) & = \max_{d \in D} \min_{u \in U} \min\{\min_{s \in[t, t+\delta]} l(x(s)), \nonumber
+      V\left(x(t+\delta), q_i, t+\delta\right)\} \nonumber\\
+      & \approx \max_{d \in D} \min_{u \in U} \min\{l(x(t)), V\left(x(t+\delta), q_i, t+\delta\right)\}
+      \end{align}
+      </p>
+      <br>
+      <p align='justify'> 
+      Approximating the value function at the next time step with a first order Taylor expansion:
+      </p>
+      <br>
+      <p align='center'>
+      \begin{align}
+      V\left(x(t+\delta), q_i, t+\delta\right) \approx & V(x, q_i, t) + \nonumber D_{t}V(x, q_i, t)\delta+\nabla V(x, q_i, t)\cdot\delta x
+      \end{align}
+      </p>
+      <br>
+      <p align='justify'> 
+      where the change in the state \(\delta x\) can be approximated as \(f_i(x,u,d) \delta\). Ignoring the higher order terms and replacing the Taylor expansion in the value function:
+      </p>
+      <br>
+      <p align='center'>
+      \begin{align}
+      V(x, q_i, t) = \min\{l(x(t)), V(x, q_i, t) + D_{t}V(x, q_i, t)\delta+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d) \delta \} 
+      \end{align}
+      </p>
+      <br>
+      <p align='justify'> 
+      The optimal value function is given by the minimum across the two cases:
+      </p>
+      <br>
+      <p align='center'>
+      \begin{align}
+      V(x, q_i, t) = \min\{l(x), V(x, q_i, t) + D_{t}V(x, q_i, t)\delta+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d) \delta , \min_{\sigma_{ij}}V(R_{ij}(x), q_{ij}, t)\} 
+      \end{align}
+      </p>
+      <br>
+      <p align='justify'> 
+      Subtracting the value function \(V(x, q_i, t)\) from both sides:
+      </p>
+      <br>
+      <p align='center'>
+      \begin{align}
+      0 = \min\{l(x(t))-V(x, q_i, t),\delta (D_{t}V(x, q_i, t)+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d)) , \min_{\sigma_{ij}}V(R_{ij}(x), q_{ij}, t) - V(x, q_i, t) \} 
+      \end{align}
+      </p>
+      <br>
+      <p align='justify'> 
+      Since the above hold for all \(\delta>0\) we must have:
+      </p>
+      <br>
+      <p align='center'> 
+      \begin{align}
+      0 = \min\{l(x(t))-V(x, q_i, t),D_{t}V(x, q_i, t)+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d) , \min_{\sigma_{ij}}V(R_{ij}(x), q_{j}, t) - V(x, q_i, t) \} 
+      \end{align}
+      </p>
+      <br>
+      <p align='justify'> 
+      Note that here we have presented an informal proof based on the Taylor series expansion of
+      the value function; a more rigorous proof of HJI-VI for continuous evolution can be found in [1].
+      </p>
+      <p align='justify'> 
+      For states outside the domain of the discrete mode \(q_i\) (i.e., \(x \in S_i^C\)), our discrete decision is over the set of available forced switches \(\varsigma_{ik}\). For this case the proof is analogous to the Case 1 previously considered, but without the option to stay in \(q_i\). The value function is then given by:   
+      </p>
+      <p align='center'> 
+      \begin{equation}
+      V(x, q_i, t) =\min_{\varsigma_{ik}}V(R_{ik}(x), q_{k}, t)
+      \end{equation}
+      </p> -->
+
+          <br>
+          <br>
+          <hr>
+
+        <center><h1>Simulation Results</h1></center>
+        <br>
+        <center><h2>Dog 1D</h2></center>        
+        <p align='justify'>To illustrate our approach, we consider very simplified, high-level dynamics for a robot
+           quadruped moving in one dimension in a room with an obstacle (table). The robot goal is to reach the marked area on the other side of the table.
+        </p>
+        <table align=center width=480px>
+          <tr>
+            <td width=640px>
+              <center>
+                  <a href="./resources/images/dog1.png"><img src ="./resources/images/dog1.png"></img></href></a><br> 
+              </center>
+            </td>
+          </tr>              
+        </table>
+
+        <p align='justify'>
+          The hybrid system representation of this system is shown in the following diagram.
+          Here, the continuous state \(x \in \mathbb{R}\) is the position of the robot and \(q_i\) with \(i \in \{1,2,3\}\) are the discrete modes of the system. 
+          \(u \in [0,1]\) is the continuous control of the system.
+          The target set is given as the set of positions \(9 \leq x \leq 10\).
+
+          In this example, \(q_1\) represents a walking gait, \(q_3\) represents frozen dynamics when the walking 
+          robot comes in contact with the table obstacle, and \(q_2\) is a crawling gait that allows the robot 
+          to move under the table but at a slower rate compared to walking.
+        </p> 
+
+        <table align=center width=360px>
+          <tr>
+              <td width=640px>
+                <center>
+                    <a href="resources\images\dog1_diagram.png"><img src ="resources\images\dog1_diagram.png"></img></href></a><br> 
+              </center>
+              </td>
+            </tr>
+        </table>
+
+        <br>
+
+        <p align='justify'>
+          The BRT for this example corresponds to all the combinations of continuous states and discrete modes
+           \((x,q)\) from which the quadruped can reach the target set within a \(5\) second time horizon.
+           Computing it using the classical Hamilton-Jacobi formulation with no optimal discrete mode switches
+           gives the following results:
+        </p>
+        <br>
+
+        <table align=center width=480px>
+          <tr>
+            <td width=640px>
+              <center>
+                  <a href="./resources/images/dog1_brt_bad.png"><img src ="./resources/images/dog1_brt_bad.png"></img></href></a><br> 
+              </center>
+            </td>
+          </tr> 
+          <tr>
+            <td width=640px>
+              <center>
+                <p align='justify'>
+                  (Top) Value function for crawling gait mode. (Bottom) Value function for walking gait mode.
+                   Obstacle is shown in shaded red. Blue shade shows BRT as the subzero level of the value function.
+                   Green shade shows target set as the subzero level of \(l(x)\). 
+                </p>
+              </center>
+            </td>
+          </tr>             
+        </table>
+
+        <p align='justify'>
+          For the crawling gait it can be observed that the BRT (the blue shaded area) propagates through the
+          obstacle and the BRT includes \(x=4m\) because the system can move at \(1m/s\) reaching the boundary
+          of the target in exactly \(5s\).
+          For the walking wait, even though the system is allowed to move faster, the BRT stops at the boundary 
+          of the obstacle as the walking gait gets stuck, so only states that start from the right side of the
+          obstacle can reach the target set.
+        </p>
+        <p align="justify">
+          We now apply the proposed method to compute the BRT.
+          To implement Algorithm 1, we use a modified version of helperOC library and the level set toolbox[1], both of which are used to solve classical HJI-VI.
+          We use a grid of 301 points over the \(x\) dimension for each of the 3 discrete operation modes. The resulting BRTs are the following: 
+        </p>
+
+        <table align=center width=480px>
+          <tr>
+            <td width=640px>
+              <center>
+                  <a href="./resources/images/dog1_brt.png"><img src ="./resources/images/dog1_brt.png"></img></href></a><br> 
+              </center>
+            </td>
+          </tr> 
+          <tr>
+            <td width=640px>
+              <center>
+                <p align='justify'>
+                  Value functions for states starting in a walking gait for a \(3\) and \(5\) seconds time horizon. 
+                  Area within the obstacle is shown in shaded red. Blue shade shows BRT as the subzero level 
+                  of the value function. Green shade shows the target set as the subzero level of the implicit
+                  target function \(l(x)\). 
+                </p>
+              </center>
+            </td>
+          </tr>             
+        </table>
+        
+        <p align="justify">
+        The intuitive solution for the optimal decision-making in this scenario is to use the walking gait
+        everywhere except in the obstacle area. The fast walking gait allows the system to reach the target quicker,
+        while crawling allows to expand the reachable states beyond the obstacle.
+        The computed solution using our algorithm indeed aligns with this intuition.
+        For example, if we consider the top value function for the 3-second time horizon, we can observe that the limit 
+        of the BRT is \(7m\) away from the target set, which coincides with the intuitive solution of walking for \(1s\)
+        covering \(3m\), then crawling under the table for \(1s\) covering its \(1m\) width, to finally go back to
+        walking for \(1s\) covering other \(3m\).
+        The bottom value function shows the BRT corresponding to a \(5s\) time horizon. Compared to the previous
+        classical attempt, where the BRT stopped growing beyond the obstacle boundary, we can see how the proposed
+        algorithm can optimally leverage discrete transitions along with continuous control to reach the target 
+        set from a wider set of initial states. 
+        </p>
+
+        <center><h2>One-Legged Jumper</h2></center>   
+        <p align="justify">
+          As a more challenging case study, we now consider a planar one-legged jumping robot that wants to reach a goal area on top of a raised platform.
+          The center of mass dynamics of the jumper robot are shown in the following diagram.
+          The robot has two main operation modes: a stance mode and a flight mode. 
+          The stance mode is active when the leg is in contact with the ground, which allows the leg to exert force and accelerate in xy directions.
+          The flight mode is activated when the leg is no longer in contact with the ground, which is modeled as an unactuated ballistic flight. 
+          Additionally, we consider a freeze mode that will permanently halt the dynamics if the center of mass of the robot collides with the terrain; this modeling allows us to obtain the characteristic of a reach-avoid scenario while only doing reach calculations, since any trajectory that goes through the terrain will be frozen and excluded of the reach BRT as it will never reach the target set.
+        </p>
+
+
+        <table align=center width=480px>
+          <tr>
+            <td width=640px>
+              <center>
+                  <a href="./resources/images/dog_jump_diag.png"><img src ="./resources/images/dog_jump_diag.png"></img></href></a><br> 
+              </center>
+            </td>
+          </tr> 
+          <tr>
+            <td width=640px>
+              <center>
+                <p align='justify'>
+                  Hybrid formulation for the planar jumping robot.
+                </p>
+              </center>
+            </td>
+          </tr>             
+        </table>
+
+        <p align="justify">
+        In this system, the continuous state is given by \([x,y,V_x,V_y]^T\), representing both positions and velocities in the \(xy\) plane. Here \(u_1\) and \(u_2\) are the force inputs in the \(x\) and \(y\) directions, both with an actuation range of \(0-30 N\).
+        \(l_0=0.5m\) is the length of the robot leg,  \(m=1kg\) is the mass of the robot, and \(g\) is the acceleration due to gravity. 
+        The target set is a circular area in the \(xy\) plane on top of a raised platform, which is considered to be part of the terrain along with the ground; the objective here is to find all the initial states of the robot in the stance mode from which a successful jump into the target set is guaranteed without colliding with the platform.
+        </p>
+
+        <p align="justify">
+        In the following clip we show results for this example. There the blue BRT shows all the resting stance states that guarantee reaching the target without colliding into the obstacle.
+        We present a trajectory and slow down at the mode transition to see how it moves between different slices of the BRT.
+        One interesting highlight of this example is how the robot builds momentum to optimally use the forced transition.
+        These behaviors are not hard-coded in the system, they automatically emerge out of the reachability analysis.
+        </p>
+
+        <br>
+        <center>
+          <video width="640" height="360" controls>
+            <source src="./resources/videos/hybrid_jumper.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+          </video>
+        </center>
+        <br>
+
+      <!--
+      <center><h2>Two-Aircraft Conflict Resolution</h2></center>        
+      <p align='justify'>
+        We next consider the two-aircraft conflict resolution example.
+        Here, two aircraft flying at a fixed altitude are considered. 
+        Each aircraft controls its speed; we assume that the first aircraft is controllable, while the other
+        aircraft's speed is uncertain (within a known interval) and hence modeled as an adversarial disturbance
+        to ensure safety. 
+        Using relative coordinates, the continuous dynamics of the system are described by:        
+      </p>
+
+      <p align='center'> 
+        \begin{equation}
+        \dot{x}_r  =-u+d \cos \psi_r+\omega_u y_r \\
+        \dot{y}_r  =d \sin \psi_r-\omega_u x_r \\
+        \dot{\psi}_r  =\omega_d-\omega_u,
+        \end{equation}
+      </p>
+
+      <p align='justify'>
+      where state \([x_r,y_r,\varphi_r]^T\) is the relative \(xy\) position and heading between the aircraft.
+      \(u\) and \(d\) are the velocities of the two aircraft, and \(\omega_u\) and \(\omega_d\) are their turning rates.
+
+      The conflict resolution protocol consists of three different operation modes. 
+      The aircraft begin in mode \(q_1\) with a straight flight (\(\omega_u=\omega_d=0)\), keeping a costant relative
+      heading. 
+      In this mode, the aircraft are on a collision course.
+      At some time, the aircraft can begin the collision avoidance maneuver by taking the switch \(\sigma_{12}\),
+      transitioning the system into mode \(q_2\) and an instantaneous heading change of \(\pi/2\).
+      In mode \(q_2\), the aircraft undergo a circular flight path, where both aircraft use the same constant
+      turning rate (\(\omega_u=\omega_d=1)\). Once the aircraft undergo a heading change of \(\pi\) radians, the
+      aircraft are forced to switch to mode \(q_3\), making another instantaneous \(\pi/2\) turn and resuming 
+      their straight flight \((\omega_u=\omega_d=0\)). 
+      The two aircraft are now on a collision-free path.
+      To keep track of the transition time on configuration \(q_2\) we add an additional timer state \(z\).
+      The hybrid system representation of this system is shown in the following diagram:
+      </p>
+
+      <table align=center width=600px>
+        <tr>
+            <td width=640px>
+              <center>
+                  <a href="resources\images\air_diag.png"><img src ="resources\images\air_diag.png"></img></href></a><br> 
+            </center>
+            </td>
+          </tr>
+      </table>
+
+
+      <p align='justify'>
+        For this system, we are interested in finding the set of all initial states in mode \(q_1\) from which
+        a collision cannot be averted between the two aircraft under the above protocol, despite the best 
+        control effort. 
+        Thus, the complement of the BRT will represent the safe states for the system.
+        For BRT calculations, we consider a circular collision target set of 5 units around the controlled aircraft.
+        This corresponds to the two aircraft being in close proximity of each other, also referred to as ''loss of separation''.
+        We use an initial relative heading of \(\varphi_r=2\pi/3\) and a time horizon of \(t=5s\).
+        For aircraft velocities we consider \(u \in [1.5,3]\) and \(d \in [2,4]\). The calculations are carried on 
+        a \([x_r,y_r,z]\) grid of \([201,201,101]\) points, \(\varphi_r\) has null dynamics in all operation modes and
+        is not considered in the grid.
+
+        Results for BRT starting from operation mode \(q_1\) are shown in the following figure. 
+        They can be interpreted as follows: if the relative coordinates of the aircraft belong to a state 
+        outside the BRT, the collision avoidance maneuver can be initiated while ensuring a collision can always 
+        be avoided as long as the optimal discrete and continuous control is applied.
+      </p>
+
+      <table align=center width=600px>
+        <tr>
+          <td width=640px>
+            <center>
+                <a href="./resources/images/air_brt.png"><img src ="./resources/images/air_brt.png"></img></href></a><br> 
+            </center>
+          </td>
+        </tr> 
+        <tr>
+          <td width=640px>
+            <center>
+              <p align='justify'>
+                Backward reachable tube for two-aircraft conflict resolution starting from mode \(q_1\). 
+                (Left) BRT for fixed speed of aircraft. (Right) BRT for aircraft under optimal control 
+                and disturbance.
+              </p>
+            </center>
+          </td>
+        </tr>             
+      </table>
+
+
+      <p align='justify'>
+        The left BRT exactly replicates the results of the case presented in [3] where both
+        aircraft keep their speed constant at their maximum value \(u=3\) and \(d=4\), where the inside of the BRT 
+        correspond to states where the adversarial airplane can place itself behind the controlled aircraft and 
+        use its higher velocity to force a collision. 
+        However, unlike [3], we do not use any hard-coded heuristics to account for the 
+        discrete transitions during the BRT computation.
+        Furthermore, the right BRT considers the scenario where, in addition to the control on the transition,
+        both aircraft control their velocities optimally to avoid/force a collision with the other aircraft.
+        The changes in the BRT are reflected in the shaded areas, where the growth in the BRT close to the 
+        target corresponds to cases where the adversarial aircraft slows down to align itself with the controlled
+        aircraft and then use its higher velocity to force a collision. The decrease in size near the tail 
+        corresponds to states where the blue airplane slows down to avoid a collision.
+      </p>
+
+      <br>
+      <hr>-->
+      <center><h1>Hardware Experiments</h1></center>
+      <br>
+
+      <p align='justify'>
+      We next apply our method for task-based, high-level mode planning on a real-world quadruped robot,
+      to reach a goal position in a terrain consisting of various obstacles. 
+      The quadruped has different walking modes, such as normal walking, walking on a slope, etc., 
+      each of which is modeled as a discrete mode in the hybrid system as shown in the following diagram:
+      </p>
+
+      <table align=center width=600px>
+        <tr>
+            <td width=640px>
+              <center>
+                  <a href="resources\images\quad_diag_1_s.png"><img src ="resources\images\quad_diag_1_s.png"></img></href></a><br> 
+            </center>
+            </td>
+          </tr>
+      </table>
+
+      <p align='justify'>
+        Within each discrete mode, we use simplified continuous dynamics to describe center-of-mass evolution:
+      </p>
+
+      <p align='center'> 
+        \begin{equation*}
+        \dot{x} =k_x V_{N} \sin \varphi + d_x; \quad 
+        \dot{y} =k_y V_{N} \cos \varphi + d_y; \quad
+        \dot{\varphi} =k_{\omega} \omega_{N},
+        \end{equation*}
+      </p>
+
+      <p align="justify">
+        where the state \([x,y,\varphi]^T\) represent the \(xy\) position and heading angle of the robot. 
+        \(V_{N} = 0.25m/s\) is the fixed (normalized) linear velocity and \(\omega_{N} \in [-0.5, 0.5] rad/s\) 
+        is the angular velocity control. 
+        \(k_x\), \(k_y\), and \(k_{\omega}\) are velocity gains for different operation modes. 
+        \(d_x\) and \(d_y\) are bounded disturbances on \(xy\) velocity. Also, we use discrete state \([z,\theta,\xi]^T\)
+        to set the body's height, pitch, and roll angle in different operation modes for overcoming various obstacles. 
+      </p>
+
+      <p align="justify">
+        Each operation mode matches a specific obstacle or terrain in the testing area. The quadruped begins in 
+        mode \(q_1\) for fast walking. If the robot reaches the boundary of the slope area, the system will be forced 
+        to switch to mode \(q_2\) with a \(20^{\circ}\) body pitch angle for slope climbing. At some time, the control 
+        may switch to mode \(q_3\) to walk slowly with a lower body height, this allows the robot to make a narrow turn 
+        or crawl under obstacles. If the robot encounters a tilted obstacle, the system will go through a forced 
+        switch into mode \(q_4\) to walk with a tilted body. Whenever the robot touches a ground obstacle, the system 
+        will stay in mode \(q_5\) permanently with frozen dynamics.
+        The quadruped needs to reason about optimally switching between these different walking modes in order to 
+        reach its goal area (the area marked as the pink cylinder in following videos) as 
+        quickly as possible without colliding with any obstacles.
+
+        BRT for this experiment is calculated on a \([x,y,\varphi]\) grid of \([40,40,72]\) points, over a time horizon 
+        of \(t=45s\). 
+        Having the BRT, we can acquire optimal velocity control, operation mode, and the desired discrete body states
+        at each time. 
+        The quadruped is equipped with an Intel T265 tracking camera, allowing it to estimate its global state via 
+        visual-inertial odometry. 
+        The high-level optimal velocity control and discrete body states provided by our framework are then tracked 
+        by a low-level MPC controller that uses the centroidal dynamics of the quadruped.
+      </p>
+
+      <p align="justify">
+        Our first experiment result is shown in the accompanying video.
+        In our environment setup, the optimal (fastest) route to reach the target is via leveraging the slope on
+        the right.
+        Specifically, the robot remains in the normal walking mode and switches to the slope walking mode once 
+        near the slope.
+        When the robot approaches the end of the slope, it needs to make a tight left turn to avoid a collision 
+        with the wall ahead. 
+        Our framework is able to recognize that and makes a transition to the slow walking mode to allow for a 
+        tighter turn. 
+        Once the turn is complete, the robot goes back in the faster walking mode.
+      </p>
+
+      <br>
+      <center>
+        <video width="640" height="360" controls>
+          <source src="./resources/videos/slope_1_w_traj_comp.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+        </video>
+      </center>
+      <br>
+
+      <p align="justify">
+        In our second experiment, we put some papers on the slope, making it more slippery. 
+        This is encoded by adding a higher disturbance in the slope mode \(q_2\). 
+        The new BRT makes the slope path infeasible and hence the robot needs to reach the target via 
+        the (slower) ground route.
+        Once again, apart from selecting a new safe route, the proposed framework is able to switch between 
+        different walking modes along the route to handle tight turns and slanted obstacles, as shown by the 
+        activation of the tilt walking mode. 
+      </p>
+
+      <br>
+      <center>
+        <video width="640" height="360" controls>
+          <source src="./resources/videos/norm_1_w_traj_comp.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+        </video>
+      </center>
+      <br>
+
+      <p align="justify">
+        Finally, to test the closed-loop robustness of our method, we add human disturbance in the ground 
+        route experiment. 
+        The robot is kicked and dragged by a human during the locomotion process. 
+        Specifically, the robot was dragged to face backward, forcing it near the tilted obstacle. 
+        However, the reachability controller is able to ensure safety by reactivating the tilt walking 
+        mode, demonstrating that the proposed framework is able to reason 
+        about both closed-loop continuous and discrete control inputs.
+        Nevertheless, it should be emphasized that the presented algorithm does
+        not solve the entirety of legged locomotion planning, but
+        rather only provides the top level of a hierarchical planning architecture that typically include a 
+        robust footstep planner, a wholebody controller, and reliable state estimation.
+      </p>
+
+      <br>
+      <center>
+        <video width="640" height="360" controls>
+          <source src="./resources/videos/norm_d_1_w_traj_comp.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+        </video>
+      </center>
+      <br>
+
+      <br>
+      <hr>
+      <center><h1>Discussion And Future Work</h1></center>
+      <br>
+
+
+      <p align="justify">
+        We present an extension of the classical HJ reachability framework to hybrid dynamical systems with controlled 
+        and forced transitions, and state resets.
+        Along with the BRT, the proposed framework provides optimal continuous and discrete control inputs for the 
+        hybrid system.
+
+        Simulation studies and hardware experiments demonstrate the proposed method, both to reach goal areas and in 
+        maintaining safety.
+        Our work opens up several exciting future research directions. 
+        First, we rely on grid-based numerical methods to compute the BRT, whose computational complexity scales 
+        exponentially with the number of continuous states, limiting a direct use of our framework to relatively 
+        low-dimensional systems. We will explore recent advances in learning-based methods to solve HJI-VI 
+        to overcome this challenge. 
+
+        Another interesting direction would be to extend our framework to the cases involving uncertainty in the 
+        transition surface \(S_i\) or where controlled switches have different transition surfaces.
+
+        Finally, we will apply our framework on a broader range of robotics applications and systems.
+      </p>
+      <br>
+      <br>
+
+      <hr>
+      
+      <p>
+        [1] I. Mitchell, “A toolbox of level set methods,” http://www.cs.ubc.ca/mitchell/ToolboxLS/toolboxLS. pdf, Tech. Rep. TR-2004-09, 2004.
+      </p>
+      <br>
+
+      <table align=center width=1100px>
+          <tr>
+              <td>
+                <left>
+          <center><h1>Acknowledgements</h1></center>
+          
+          <br>
+          This research is supported in part by the DARPA ANSR program and by NSF CAREER program (award number 2240163) and BECAS Chile.
+          <br>
+          <br>
+          This webpage template was borrowed from some <a href="https://richzhang.github.io/colorization/">colorful folks</a>.
+      </left>
+  </td>
+  </tr>
+  </table>
+
+  <br><br>
+</body>
+</html>
