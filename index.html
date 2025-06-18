@@ -4,7 +4,7 @@
 <style type="text/css">
   #bannerimage {
     width: 100%;
-    background-image: url("./resources/images/dog1.png");
+    background-image: url("./resources/images/hw_banner_safe_mppi_v5.png");
     height: 300px;
     background-color: rgb(255, 255, 255);
     background-position: center;
@@ -123,7 +123,7 @@
 
 <html>
   <head>
-        <title>Hamilton-Jacobi Reachability Analysis for Hybrid Systems with Controlled and Forced Transitions</title>
+        <title>DualGuard MPPI - Safe Optimal Control via Sampling MPC and HJ Reachability</title>
         <meta property="og:title" content="Factored 3D" />
   </head>
 
@@ -149,7 +149,7 @@
     <div id="bannerimage"></div>
     <br>
     <center>
-    <span style="font-size:42px">Hamilton-Jacobi Reachability Analysis for Hybrid Systems with Controlled and Forced Transitions</span>
+    <span style="font-size:42px">DualGuard MPPI - Safe Optimal Control via Sampling MPC and HJ Reachability</span>
     </center>
 
     <br><br>
@@ -163,25 +163,20 @@
 
         <td align=center width=100px>
         <center>
-        <span style="font-size:20px"><a href="https://www.psrobotics.tech/index.html">Shuang Peng*</a></span>
+        <span style="font-size:20px">Luke Raus<sup>†</sup></a></span>
         </center>
         </td>
 
         <td align=center width=100px>
         <center>
-        <span style="font-size:20px">Yiyu Chen*</span>
+        <span style="font-size:20px">Yusuf Ciftci*</span>
         </center>
         </td>
 
-        <td align=center width=100px>
-        <center>
-        <span style="font-size:20px">Quan Nguyen*</span>
-        </center>
-        </td>      
            
         <td align=center width=100px>
         <center>
-        <span style="font-size:20px"><a href="https://smlbansal.github.io/">Somil Bansal*</a></span>
+        <span style="font-size:20px"><a href="https://smlbansal.github.io/">Somil Bansal<sup>‡</sup></a></span>
         </center>
         </td>
 
@@ -194,21 +189,23 @@
        <tr>
         <td align=center width=100px>
         <center>
-        <span>*University of Southern California</span>
+        <div>*University of Southern California</div>
+        <div><sup>†</sup>Olin College of Engineering</div>
+        <div><sup>‡</sup>Stanford University</div>
         </center>
         </td>	       
       </tr>
     </table>
     <br>
     <center>
-      <span style="font-size:20px">To be presented at Robotics: Science and Systems 2024</span>
+      <span style="font-size:20px">Published: IEEE Robotics and Automation Letters 2025</span>
       </center>
     <br>
        
     <table align=center width=500px>
       <tr>
         <td align=center width=100px><center><span style="font-size:20px">
-          <a href="https://arxiv.org/pdf/2309.10893.pdf">[pdf]</a></span>
+          <a href="https://arxiv.org/pdf/2502.01924">[pdf]</a></span>
         </center></td>
             <!--
             <td align=center width=100px><center><span style="font-size:20px">
@@ -216,32 +213,24 @@
             </center></td>-->  
 
             <td align=center width=100px><center><span style="font-size:20px">
-              <a href="https://github.com/JavierBorquez/hj_hybrid_reachability">[source code]</a></span>
+              <a href="https://github.com/luke-raus/DualGuard-MPPI">[source code]</a></span>
           </center></td>          
       </tr>
     </table>    
         
     <br>
-  <!--  
-  <table align=center>
-              <tr>
-                  <td width=1000>
-                    <center>
-                      <iframe width="560" height="315" src="https://www.youtube.com/embed/odl88srx2iI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                  </center>
-                  </td>
-              </tr>
-            </table>
-            -->
-          <hr>
+
+    <hr>
     <center><h1>Abstract</h1></center>
 
             <p align='justify'>
-              Hybrid dynamical systems with non-linear dynamics are one of the most general modeling tools for representing robotic systems, especially contact-rich systems. 
-              However, providing guarantees regarding the safety or performance of such hybrid systems can still prove to be a challenging problem because it requires simultaneous reasoning about continuous state evolution and discrete mode switching. 
-              In this work, we address this problem by extending classical Hamilton-Jacobi (HJ) reachability analysis, a formal verification method for continuous non-linear dynamics in the presence of bounded inputs and disturbances, to hybrid dynamical systems. 
-              Our framework can compute reachable sets for hybrid systems consisting of multiple discrete modes, each with its own set of non-linear continuous dynamics, discrete transitions that can be directly commanded or forced by a discrete control input, while still accounting for control bounds and adversarial disturbances in the state evolution. 
-              Along with the reachable set, the proposed framework also provides an optimal continuous and discrete controller to ensure system safety.
-              We demonstrate our framework in simulation on an aircraft collision avoidance problem, as well as on a real-world testbed to solve the optimal mode planning problem for a quadruped with multiple gaits.
+              Designing controllers that are both safe and performant is inherently challenging.
+              This co-optimization can be formulated as a constrained optimal control problem, where the cost function represents the performance criterion and safety is specified as a constraint.
+              While sampling-based methods, such as Model Predictive Path Integral (MPPI) control, have shown great promise in tackling complex optimal control problems, they often struggle to enforce safety constraints. 
+              To address this limitation, we propose DualGuard-MPPI, a novel framework for solving safety-constrained optimal control problems.
+              Our approach integrates Hamilton-Jacobi reachability analysis within the MPPI sampling process to ensure that all generated samples are provably safe for the system. 
+              On the one hand, this integration allows DualGuard-MPPI to enforce strict safety constraints; at the same time, it facilitates a more effective exploration of the environment with the same number of samples, reducing the effective sampling variance and leading to better performance optimization.
+              Through several simulations and hardware experiments, we demonstrate that the proposed approach achieves much higher performance compared to existing MPPI methods, without compromising safety.
             </p>
 <br>
 <br>
