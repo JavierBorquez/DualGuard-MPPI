@@ -246,7 +246,7 @@
 <br>
 <br>
 <hr>
-        <center><h1>Problem Formulation</h1></center>
+        <!-- <center><h1>Problem Formulation</h1></center>
         
         <p align='justify'>Consider a hybrid dynamical system with a finite set of discrete modes \(Q = \{q_1, q_2, ..., q_N\}\), connected through controlled or forced switches. We also refer to \(q_i\) as the discrete state of the system.
         </p>          
@@ -344,140 +344,7 @@
         </table>
 
         <br>
- 
-
-        <!-- <center><h1>Proof</h1></center>
-
-        <p align='justify'>
-        We start with an analogous formulation to HJ reachability with a target function \(l(x)\) such that the target set is defined as its sub-zero level set, \(\mathcal{L} = \{(x) : l(x)\leq 0\}\). 
-        The BRT seeks to find all states that could enter \(\mathcal{L}\) at any point within the time horizon. This is computed by finding the minimum distance to \(\mathcal{L}\) over time.
-        </p>
-
-        <p align='justify'>
-        The value function is defined as the cost incurred under optimal discrete and continuous controls that minimizes distance to the target and optimal disturbances that maximizes it. 
-        We first consider the case when the state belongs to the interior of the domain \(S_i\).
-        The value function is given as:
-        </p>
-
-
-        <p align='center'>
-        \(V(x, q_i, t) = \max_{d \in D} \min_{u \in U} \min_{\sigma_{ij}}\min_{s \in[t, T]} l(x(s))\)
-        </p>
-        <p align='justify'>
-        With terminal time condition given by:
-        </p>        
-        <p align='center'>
-        \(V(x, q_i, T) = l(x)\)
-        </p> 
-
-        <p align='justify'>
-        The optimal decision making for discrete transitions is pictorially shown in the figure below.
-        </p> 
-        
-        <table align=center width=600px>
-          <tr>
-            <td width=640px>
-              <center>
-                  <a href="./resources/images/proof_diag.png"><img src ="./resources/images/proof_diag.png"></img></href></a><br> 
-              </center>
-            </td>
-          </tr>              
-      </table>
-
-      <p align='justify'>
-      The discrete transitions are shown in green arrows and continuous control flow are indicated by purple trajectories.
-      We also add a ''dummy'' discrete transition, \(\sigma_{ii}\), that keeps the system in the current discrete mode.
-      By definition,
-      the overall value function is given by the minimum cost across all these possible trajectories of the system.
-      From here, we consider two different cases:
-      </p>
-      <br>
-      <p align='justify'>
-      <b>Case 1</b>: If the system switches to a new discrete mode \(j^*\), the continuous state immediately transitions to \(R_{ij^*}\). 
-      In this case, the optimal cost incurred by the system from the new state \((R_{ij^*}(x), q_{j^*})\) is, by definition, given as \(V(R_{ij^*}(x), q_{j^*}, t)\). 
-      Thus, the optimal cost across all possible discrete transitions is given as:
-      </p>
-      <br>
-      <p align='center'>
-      \(V(x, q_i, t) =\min_{\sigma_{ij}}V(R_{ij}(x), q_{j}, t)\)
-      </p>
-      <br>
-      <p align='justify'>
-      <b>Case 2</b>: The system evolves in the same mode \(q_i\), i.e., it takes the dummy switch \(\sigma_{ii}\). 
-      In this case, for a small time step \(\delta\) and using the dynamic programming principle for the cost function, we have:
-      </p>
-      <br>
-      <p align='center'>
-      \begin{align} \label{eqn:cont_flow}
-      V(x, q_i, t) & = \max_{d \in D} \min_{u \in U} \min\{\min_{s \in[t, t+\delta]} l(x(s)), \nonumber
-      V\left(x(t+\delta), q_i, t+\delta\right)\} \nonumber\\
-      & \approx \max_{d \in D} \min_{u \in U} \min\{l(x(t)), V\left(x(t+\delta), q_i, t+\delta\right)\}
-      \end{align}
-      </p>
-      <br>
-      <p align='justify'> 
-      Approximating the value function at the next time step with a first order Taylor expansion:
-      </p>
-      <br>
-      <p align='center'>
-      \begin{align}
-      V\left(x(t+\delta), q_i, t+\delta\right) \approx & V(x, q_i, t) + \nonumber D_{t}V(x, q_i, t)\delta+\nabla V(x, q_i, t)\cdot\delta x
-      \end{align}
-      </p>
-      <br>
-      <p align='justify'> 
-      where the change in the state \(\delta x\) can be approximated as \(f_i(x,u,d) \delta\). Ignoring the higher order terms and replacing the Taylor expansion in the value function:
-      </p>
-      <br>
-      <p align='center'>
-      \begin{align}
-      V(x, q_i, t) = \min\{l(x(t)), V(x, q_i, t) + D_{t}V(x, q_i, t)\delta+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d) \delta \} 
-      \end{align}
-      </p>
-      <br>
-      <p align='justify'> 
-      The optimal value function is given by the minimum across the two cases:
-      </p>
-      <br>
-      <p align='center'>
-      \begin{align}
-      V(x, q_i, t) = \min\{l(x), V(x, q_i, t) + D_{t}V(x, q_i, t)\delta+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d) \delta , \min_{\sigma_{ij}}V(R_{ij}(x), q_{ij}, t)\} 
-      \end{align}
-      </p>
-      <br>
-      <p align='justify'> 
-      Subtracting the value function \(V(x, q_i, t)\) from both sides:
-      </p>
-      <br>
-      <p align='center'>
-      \begin{align}
-      0 = \min\{l(x(t))-V(x, q_i, t),\delta (D_{t}V(x, q_i, t)+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d)) , \min_{\sigma_{ij}}V(R_{ij}(x), q_{ij}, t) - V(x, q_i, t) \} 
-      \end{align}
-      </p>
-      <br>
-      <p align='justify'> 
-      Since the above hold for all \(\delta>0\) we must have:
-      </p>
-      <br>
-      <p align='center'> 
-      \begin{align}
-      0 = \min\{l(x(t))-V(x, q_i, t),D_{t}V(x, q_i, t)+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d) , \min_{\sigma_{ij}}V(R_{ij}(x), q_{j}, t) - V(x, q_i, t) \} 
-      \end{align}
-      </p>
-      <br>
-      <p align='justify'> 
-      Note that here we have presented an informal proof based on the Taylor series expansion of
-      the value function; a more rigorous proof of HJI-VI for continuous evolution can be found in [1].
-      </p>
-      <p align='justify'> 
-      For states outside the domain of the discrete mode \(q_i\) (i.e., \(x \in S_i^C\)), our discrete decision is over the set of available forced switches \(\varsigma_{ik}\). For this case the proof is analogous to the Case 1 previously considered, but without the option to stay in \(q_i\). The value function is then given by:   
-      </p>
-      <p align='center'> 
-      \begin{equation}
-      V(x, q_i, t) =\min_{\varsigma_{ik}}V(R_{ik}(x), q_{k}, t)
-      \end{equation}
-      </p> -->
-
+         
           <br>
           <br>
           <hr>
@@ -653,112 +520,7 @@
         </center>
         <br>
 
-      <!--
-      <center><h2>Two-Aircraft Conflict Resolution</h2></center>        
-      <p align='justify'>
-        We next consider the two-aircraft conflict resolution example.
-        Here, two aircraft flying at a fixed altitude are considered. 
-        Each aircraft controls its speed; we assume that the first aircraft is controllable, while the other
-        aircraft's speed is uncertain (within a known interval) and hence modeled as an adversarial disturbance
-        to ensure safety. 
-        Using relative coordinates, the continuous dynamics of the system are described by:        
-      </p>
-
-      <p align='center'> 
-        \begin{equation}
-        \dot{x}_r  =-u+d \cos \psi_r+\omega_u y_r \\
-        \dot{y}_r  =d \sin \psi_r-\omega_u x_r \\
-        \dot{\psi}_r  =\omega_d-\omega_u,
-        \end{equation}
-      </p>
-
-      <p align='justify'>
-      where state \([x_r,y_r,\varphi_r]^T\) is the relative \(xy\) position and heading between the aircraft.
-      \(u\) and \(d\) are the velocities of the two aircraft, and \(\omega_u\) and \(\omega_d\) are their turning rates.
-
-      The conflict resolution protocol consists of three different operation modes. 
-      The aircraft begin in mode \(q_1\) with a straight flight (\(\omega_u=\omega_d=0)\), keeping a costant relative
-      heading. 
-      In this mode, the aircraft are on a collision course.
-      At some time, the aircraft can begin the collision avoidance maneuver by taking the switch \(\sigma_{12}\),
-      transitioning the system into mode \(q_2\) and an instantaneous heading change of \(\pi/2\).
-      In mode \(q_2\), the aircraft undergo a circular flight path, where both aircraft use the same constant
-      turning rate (\(\omega_u=\omega_d=1)\). Once the aircraft undergo a heading change of \(\pi\) radians, the
-      aircraft are forced to switch to mode \(q_3\), making another instantaneous \(\pi/2\) turn and resuming 
-      their straight flight \((\omega_u=\omega_d=0\)). 
-      The two aircraft are now on a collision-free path.
-      To keep track of the transition time on configuration \(q_2\) we add an additional timer state \(z\).
-      The hybrid system representation of this system is shown in the following diagram:
-      </p>
-
-      <table align=center width=600px>
-        <tr>
-            <td width=640px>
-              <center>
-                  <a href="resources\images\air_diag.png"><img src ="resources\images\air_diag.png"></img></href></a><br> 
-            </center>
-            </td>
-          </tr>
-      </table>
-
-
-      <p align='justify'>
-        For this system, we are interested in finding the set of all initial states in mode \(q_1\) from which
-        a collision cannot be averted between the two aircraft under the above protocol, despite the best 
-        control effort. 
-        Thus, the complement of the BRT will represent the safe states for the system.
-        For BRT calculations, we consider a circular collision target set of 5 units around the controlled aircraft.
-        This corresponds to the two aircraft being in close proximity of each other, also referred to as ''loss of separation''.
-        We use an initial relative heading of \(\varphi_r=2\pi/3\) and a time horizon of \(t=5s\).
-        For aircraft velocities we consider \(u \in [1.5,3]\) and \(d \in [2,4]\). The calculations are carried on 
-        a \([x_r,y_r,z]\) grid of \([201,201,101]\) points, \(\varphi_r\) has null dynamics in all operation modes and
-        is not considered in the grid.
-
-        Results for BRT starting from operation mode \(q_1\) are shown in the following figure. 
-        They can be interpreted as follows: if the relative coordinates of the aircraft belong to a state 
-        outside the BRT, the collision avoidance maneuver can be initiated while ensuring a collision can always 
-        be avoided as long as the optimal discrete and continuous control is applied.
-      </p>
-
-      <table align=center width=600px>
-        <tr>
-          <td width=640px>
-            <center>
-                <a href="./resources/images/air_brt.png"><img src ="./resources/images/air_brt.png"></img></href></a><br> 
-            </center>
-          </td>
-        </tr> 
-        <tr>
-          <td width=640px>
-            <center>
-              <p align='justify'>
-                Backward reachable tube for two-aircraft conflict resolution starting from mode \(q_1\). 
-                (Left) BRT for fixed speed of aircraft. (Right) BRT for aircraft under optimal control 
-                and disturbance.
-              </p>
-            </center>
-          </td>
-        </tr>             
-      </table>
-
-
-      <p align='justify'>
-        The left BRT exactly replicates the results of the case presented in [3] where both
-        aircraft keep their speed constant at their maximum value \(u=3\) and \(d=4\), where the inside of the BRT 
-        correspond to states where the adversarial airplane can place itself behind the controlled aircraft and 
-        use its higher velocity to force a collision. 
-        However, unlike [3], we do not use any hard-coded heuristics to account for the 
-        discrete transitions during the BRT computation.
-        Furthermore, the right BRT considers the scenario where, in addition to the control on the transition,
-        both aircraft control their velocities optimally to avoid/force a collision with the other aircraft.
-        The changes in the BRT are reflected in the shaded areas, where the growth in the BRT close to the 
-        target corresponds to cases where the adversarial aircraft slows down to align itself with the controlled
-        aircraft and then use its higher velocity to force a collision. The decrease in size near the tail 
-        corresponds to states where the blue airplane slows down to avoid a collision.
-      </p>
-
-      <br>
-      <hr>-->
+      
       <center><h1>Hardware Experiments</h1></center>
       <br>
 
@@ -912,7 +674,7 @@
         Finally, we will apply our framework on a broader range of robotics applications and systems.
       </p>
       <br>
-      <br>
+      <br> -->
 
       <hr>
       
