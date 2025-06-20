@@ -234,436 +234,165 @@
             </p>
 <br>
 <br>
-<hr>
-        <!-- <center><h1>Problem Formulation</h1></center>
-        
-        <p align='justify'>Consider a hybrid dynamical system with a finite set of discrete modes \(Q = \{q_1, q_2, ..., q_N\}\), connected through controlled or forced switches. We also refer to \(q_i\) as the discrete state of the system.
-        </p>          
-        <table align=center width=400px>
-            <tr>
-              <td width=640px>
-                <center>
-                    <a href="./resources/images/general_hyb.png"><img src ="./resources/images/general_hyb.png"></img></href></a><br> 
-                </center>
-              </td>
-            </tr>              
-        </table>
+<hr>        
+        <center><h1>Problem Statement</h1></center>
 
-
-        <p align='justify'>Let \(x \in X \subset \mathbb{R}^{n_x}\) be the continuous state of the system, \( u \in U \subset \mathbb{R}^{n_u}\) be the continuous control input, and \(d \in D \subset \mathbb{R}^{n_d}\) be the continuous disturbance in the system. In each discrete mode \(q_i \in Q\), the continuous state evolves according to the following dynamics:
-        </p>
-
-        <p align='center'>\(\dot{x} = f_i(x, u, d)\)</p>
-
-
-
-        <p align='justify'></p>as long as \(x \in S_i \subset X\), where \(S_i\) is the valid operation domain for mode \(q_i\). 
-
-        <p align='justify'>\(q_i\) also has discrete control switches \(\sigma_{ij}\) that allow controlled transition into another discrete mode \(q_{j}\), where \(j \in \{j_1,j_2, ...,j_n\} \subset \{1, 2, ..., N\}\). 
-        Note that the number of discrete modes the system can transition into (that is, \(n\)) may vary across different \(q_i\).
-        As \(x\) approaches \({S_i}^C\) (denoted \(x \to {S_i}^C\)), the system must take one of the forced control switches, \(\varsigma_{ik}\).
-        This leads to a forced transition into another discrete modes \(q_{k}\) 
-        where \(k \in \{k_1,k_2,...,k_m\} \subset \{1, 2, ..., N\}\).
-        Each discrete transition from \(q_i\) to \(q_j\), whether controlled or forced, might lead to a state reset \(x^+ = R_{ij}(x)\), where \(x\) is the state before the transition, \(x^+\) is the state after the transition.
-        </p>
-        <p align='justify'>Our key objective in this work is to compute the Backward Reachable Tube (BRT) of this hybrid dynamical system, defined as the set of initial discrete modes and continuous states \((x,q)\) of the system for which the agent acting optimally and under worst-case disturbances will eventually reach a target set \(\mathcal{L}\) within the time horizon \([t, T]\). Mathematically, the BRT is defined as:</p>
-
-        <p align='center'>\(\mathcal{V}(t)=\{(x_0, q_0): \forall d(\cdot), \exists u(\cdot), \sigma(\cdot), \varsigma(\cdot), \exists s \in [t, T], x(s) \in \mathcal{L}\}\)
+        <p align='justify'>
+        Consider an autonomous system with state \( x \in X \subseteq \mathbb{R}^n \) evolving under continuous dynamics \( \dot{x} = f(x, u, d) \), where \( u \in U \) is the control input and \( d \in D \) is a disturbance input, which may model uncertainty or an adversarial influence. The function \( f \) is assumed to be uniformly continuous in \( u \) and \( d \), bounded, and Lipschitz continuous in \( x \) for fixed \( u \), \( d \).
         </p>
 
         <p align='justify'>
-        where \(x(s)\) denotes the (continuous) state of the system at time \(s\), starting from state \(x_0\) and discrete mode \(q_0\) under continuous control profile \(u(\cdot)\), discrete control switch profile \(\sigma(\cdot)\), forced control switch profile \(\varsigma(\cdot)\), and disturbance \(d(\cdot)\).
-        Along with the BRT, we are interested in finding the optimal discrete and continuous control inputs that steer the system to the target set.
-        Conversely, if \(\mathcal{L}\) represents the set of undesirable states for the system (such as obstacles for a navigation robot), we are interested in computing the BRT with the role of control and disturbance switched, i.e., finding the set of initial states from which getting into \(\mathcal{L}\) is unavoidable, despite best control effort.
+        Let \( \xi_{x,t}^{u,d}(\tau) \) denote the system trajectory at time \( \tau \), initialized at state \( x \) and time \( t \), under control signal \( u(\cdot) \) and disturbance signal \( d(\cdot) \). These signals are measurable functions from time to their respective admissible sets, and are assumed to be piecewise continuous, ensuring the trajectory exists, is unique, and remains continuous for all initial states.
         </p>
 
+        <p align='justify'>
+        We are given a failure set \( \mathcal{T} \subset X \), representing unsafe states (e.g., obstacles). This set is encoded by a Lipschitz continuous function \( l(x) \), such that \( \mathcal{T} = \{ x : l(x) \leq 0 \} \). The objective is to design a control policy that minimizes a performance cost while ensuring the state never enters \( \mathcal{T} \), even under worst-case disturbances.
+        </p>
 
+        <p align='justify'>
+        The cost functional to minimize over trajectories is defined as:
+        </p>
 
+        <p align='center'>
+        \( S(\xi) = \phi(x(t_f), t_f) + \int_{t_0}^{t_f} \mathcal{L}(x(t), u(t), t)\, dt \)
+        </p>
+
+        <p align='justify'>
+        Here, \( \phi \) and \( \mathcal{L} \) denote terminal and running costs, respectively, and \( t_f \) is the task horizon. We aim to find a control policy \( u^*(\cdot) \) that minimizes this cost while enforcing safety:
+        </p>
+
+        <p align='center'>
+        \(
+        \begin{aligned}
+            u^{*}(\cdot) &= \arg\min_{u(\cdot)} S(\xi_{x,t}^{u,d}, u(\cdot)) \\
+            \text{s.t.} \quad \dot{x}(t) &= f(x(t), u(t), d(t)), \\
+            l(x(t)) &> 0,\quad u(t) \in U,\quad d(t) \in D,\quad \forall t \in [t, t_f]
+        \end{aligned}
+        \)
+        </p>
+
+        <p align='justify'>
+        This constrained optimal control problem is generally non-convex and difficult to solve. In this work, we propose a sampling-based Model Predictive Path Integral (MPPI) method that rigorously enforces safety while optimizing performance.
+        </p>
 
         <hr>
-        <center><h1>Theorem I</h1></center>
+        <center><h1>Background</h1></center>
+
+        <!-- MPPI Section -->
+        <h2>Model Predictive Path Integral (MPPI)</h2>
 
         <p align='justify'>
-        The core contribution of this work is Theorem I, an extension of the classical HJ reachability framework to hybrid dynamical systems with controlled and forced transitions, as well as state resets.
-        </p>
-        <p align='justify'>     
-        For a hybrid dynamical system, the value function \(V(x, q_i, t)\) that captures the BRT for an implicit target function \(l(x)\) is given by solving the following constrained VI:
-        </p>
-        <p align='justify'> 
-        If \(x \in S_i\):
-        </p>
-        <p align='center'>  
-        \begin{multline}
-        \min\{l(x)-V(x, q_i, t), \min_{\sigma_{ij}}V(R_{ij}(x), q_{j}, t) - V(x, q_i, t), D_{t}V(x, q_i, t)+ \max_{d \in D} \min_{u \in U} \nabla V(x, q_i, t)\cdot f_i(x,u,d)\} = 0, 
-        \end{multline}
-        </p>
-        <p align='justify'> 
-        and if \(x \in S_i^C\):
-        </p>
-        <p align='center'> 
-        \begin{equation} \label{eqn:froced_transition_valfunc}
-        V(x, q_i, t) =\min_{\varsigma_{ik}}V(R_{ik}(x), q_{k}, t)
-        \end{equation}
-        </p>
-        <p align='justify'>  
-        With terminal time condition:
-        </p>
-        <p align='center'>  
-        \begin{equation}
-        V(x, q_i, T) = l(x) 
-        \end{equation}
+        Model Predictive Path Integral (MPPI) is a sampling-based control method that optimizes trajectories by perturbing a nominal control sequence with noise and evaluating the resulting system rollouts. Each perturbed trajectory is assigned a cost, and the nominal control is updated as a weighted average of the perturbations, where lower-cost trajectories contribute more, the update is given by:
         </p>
 
-        <br>
-        <br>
-        <p align='justify'><strong>Numerical implementation</strong>: We now present an approximate numerical algorithm that can be used to calculate the value function in Theorem 1. 
-        It builds upon the value function calculation for the classical HJI-VI , which is solved using currently available level set methods [1]. 
-        Specifically, the value function is computed over a discretized state-space grid and propagated in time using a small timestep \(\delta\).
-        After each propagation step, the value function is updated for all \((x,q)\) using Theorem I, until the time horizon \(T\) is reached. 
-        </p> 
-
-        <table align=center width=480px>
-          <tr>
-              <td width=640px>
-                <center>
-                    <a href="resources\images\algorithm.png"><img src ="resources\images\algorithm.png"></img></href></a><br> 
-              </center>
-              </td>
-            </tr>
-        </table>
-
-        <br>
-         
-          <br>
-          <br>
-          <hr>
-
-        <center><h1>Simulation Results</h1></center>
-        <br>
-        <center><h2>Dog 1D</h2></center>        
-        <p align='justify'>To illustrate our approach, we consider very simplified, high-level dynamics for a robot
-           quadruped moving in one dimension in a room with an obstacle (table). The robot goal is to reach the marked area on the other side of the table.
+        <p align='center'>
+        \[
+        u(x,j)^{\ast} \approx u(x,j) + \frac{\sum_{k=1}^{K} \exp\left[-\frac{1}{\lambda}S(\xi_j^k)\right] \delta_j^k}{\sum_{k=1}^{K} \exp\left[-\frac{1}{\lambda}S(\xi_j^k)\right]}
+        \]
         </p>
-        <table align=center width=480px>
-          <tr>
-            <td width=640px>
-              <center>
-                  <a href="./resources/images/dog1.png"><img src ="./resources/images/dog1.png"></img></href></a><br> 
-              </center>
-            </td>
-          </tr>              
-        </table>
 
         <p align='justify'>
-          The hybrid system representation of this system is shown in the following diagram.
-          Here, the continuous state \(x \in \mathbb{R}\) is the position of the robot and \(q_i\) with \(i \in \{1,2,3\}\) are the discrete modes of the system. 
-          \(u \in [0,1]\) is the continuous control of the system.
-          The target set is given as the set of positions \(9 \leq x \leq 10\).
-
-          In this example, \(q_1\) represents a walking gait, \(q_3\) represents frozen dynamics when the walking 
-          robot comes in contact with the table obstacle, and \(q_2\) is a crawling gait that allows the robot 
-          to move under the table but at a slower rate compared to walking.
-        </p> 
-
-        <table align=center width=360px>
-          <tr>
-              <td width=640px>
-                <center>
-                    <a href="resources\images\dog1_diagram.png"><img src ="resources\images\dog1_diagram.png"></img></href></a><br> 
-              </center>
-              </td>
-            </tr>
-        </table>
-
-        <br>
-
-        <p align='justify'>
-          The BRT for this example corresponds to all the combinations of continuous states and discrete modes
-           \((x,q)\) from which the quadruped can reach the target set within a \(5\) second time horizon.
-           Computing it using the classical Hamilton-Jacobi formulation with no optimal discrete mode switches
-           gives the following results:
-        </p>
-        <br>
-
-        <table align=center width=480px>
-          <tr>
-            <td width=640px>
-              <center>
-                  <a href="./resources/images/dog1_brt_bad.png"><img src ="./resources/images/dog1_brt_bad.png"></img></href></a><br> 
-              </center>
-            </td>
-          </tr> 
-          <tr>
-            <td width=640px>
-              <center>
-                <p align='justify'>
-                  (Top) Value function for crawling gait mode. (Bottom) Value function for walking gait mode.
-                   Obstacle is shown in shaded red. Blue shade shows BRT as the subzero level of the value function.
-                   Green shade shows target set as the subzero level of \(l(x)\). 
-                </p>
-              </center>
-            </td>
-          </tr>             
-        </table>
-
-        <p align='justify'>
-          For the crawling gait it can be observed that the BRT (the blue shaded area) propagates through the
-          obstacle and the BRT includes \(x=4m\) because the system can move at \(1m/s\) reaching the boundary
-          of the target in exactly \(5s\).
-          For the walking wait, even though the system is allowed to move faster, the BRT stops at the boundary 
-          of the obstacle as the walking gait gets stuck, so only states that start from the right side of the
-          obstacle can reach the target set.
-        </p>
-        <p align="justify">
-          We now apply the proposed method to compute the BRT.
-          To implement Algorithm 1, we use a modified version of helperOC library and the level set toolbox[1], both of which are used to solve classical HJI-VI.
-          We use a grid of 301 points over the \(x\) dimension for each of the 3 discrete operation modes. The resulting BRTs are the following: 
+        This procedure is repeated at every time step. The figure below visualizes the forward-simulated rollouts from sampled noisy control sequences. High-cost (unsafe) rollouts are shown in red, while lower-cost (safer) ones are shown in blue.
         </p>
 
-        <table align=center width=480px>
-          <tr>
-            <td width=640px>
-              <center>
-                  <a href="./resources/images/dog1_brt.png"><img src ="./resources/images/dog1_brt.png"></img></href></a><br> 
-              </center>
-            </td>
-          </tr> 
-          <tr>
-            <td width=640px>
-              <center>
-                <p align='justify'>
-                  Value functions for states starting in a walking gait for a \(3\) and \(5\) seconds time horizon. 
-                  Area within the obstacle is shown in shaded red. Blue shade shows BRT as the subzero level 
-                  of the value function. Green shade shows the target set as the subzero level of the implicit
-                  target function \(l(x)\). 
-                </p>
-              </center>
-            </td>
-          </tr>             
-        </table>
-        
-        <p align="justify">
-        The intuitive solution for the optimal decision-making in this scenario is to use the walking gait
-        everywhere except in the obstacle area. The fast walking gait allows the system to reach the target quicker,
-        while crawling allows to expand the reachable states beyond the obstacle.
-        The computed solution using our algorithm indeed aligns with this intuition.
-        For example, if we consider the top value function for the 3-second time horizon, we can observe that the limit 
-        of the BRT is \(7m\) away from the target set, which coincides with the intuitive solution of walking for \(1s\)
-        covering \(3m\), then crawling under the table for \(1s\) covering its \(1m\) width, to finally go back to
-        walking for \(1s\) covering other \(3m\).
-        The bottom value function shows the BRT corresponding to a \(5s\) time horizon. Compared to the previous
-        classical attempt, where the BRT stopped growing beyond the obstacle boundary, we can see how the proposed
-        algorithm can optimally leverage discrete transitions along with continuous control to reach the target 
-        set from a wider set of initial states. 
-        </p>
-
-        <center><h2>One-Legged Jumper</h2></center>   
-        <p align="justify">
-          As a more challenging case study, we now consider a planar one-legged jumping robot that wants to reach a goal area on top of a raised platform.
-          The center of mass dynamics of the jumper robot are shown in the following diagram.
-          The robot has two main operation modes: a stance mode and a flight mode. 
-          The stance mode is active when the leg is in contact with the ground, which allows the leg to exert force and accelerate in xy directions.
-          The flight mode is activated when the leg is no longer in contact with the ground, which is modeled as an unactuated ballistic flight. 
-          Additionally, we consider a freeze mode that will permanently halt the dynamics if the center of mass of the robot collides with the terrain; this modeling allows us to obtain the characteristic of a reach-avoid scenario while only doing reach calculations, since any trajectory that goes through the terrain will be frozen and excluded of the reach BRT as it will never reach the target set.
-        </p>
-
-
-        <table align=center width=480px>
-          <tr>
-            <td width=640px>
-              <center>
-                  <a href="./resources/images/dog_jump_diag.png"><img src ="./resources/images/dog_jump_diag.png"></img></href></a><br> 
-              </center>
-            </td>
-          </tr> 
-          <tr>
-            <td width=640px>
-              <center>
-                <p align='justify'>
-                  Hybrid formulation for the planar jumping robot.
-                </p>
-              </center>
-            </td>
-          </tr>             
-        </table>
-
-        <p align="justify">
-        In this system, the continuous state is given by \([x,y,V_x,V_y]^T\), representing both positions and velocities in the \(xy\) plane. Here \(u_1\) and \(u_2\) are the force inputs in the \(x\) and \(y\) directions, both with an actuation range of \(0-30 N\).
-        \(l_0=0.5m\) is the length of the robot leg,  \(m=1kg\) is the mass of the robot, and \(g\) is the acceleration due to gravity. 
-        The target set is a circular area in the \(xy\) plane on top of a raised platform, which is considered to be part of the terrain along with the ground; the objective here is to find all the initial states of the robot in the stance mode from which a successful jump into the target set is guaranteed without colliding with the platform.
-        </p>
-
-        <p align="justify">
-        In the following clip we show results for this example. There the blue BRT shows all the resting stance states that guarantee reaching the target without colliding into the obstacle.
-        We present a trajectory and slow down at the mode transition to see how it moves between different slices of the BRT.
-        One interesting highlight of this example is how the robot builds momentum to optimally use the forced transition.
-        These behaviors are not hard-coded in the system, they automatically emerge out of the reachability analysis.
-        </p>
-
-        <br>
         <center>
-          <video width="640" height="360" controls>
-            <source src="./resources/videos/hybrid_jumper.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-          </video>
+            <img src="./resources/images/mppi_car_sim.png" width="45%">
         </center>
-        <br>
 
-      
-      <center><h1>Hardware Experiments</h1></center>
-      <br>
+        <p align='justify'>
+        By weighting noisy control perturbations based on their associated trajectory cost, MPPI approximates a solution to the constrained optimal control problem introduced above. While it does not enforce hard constraints, it optimizes performance by sampling and refining control sequences that are more likely to yield lower-cost, goal-directed behavior.
+        </p>
 
-      <p align='justify'>
-      We next apply our method for task-based, high-level mode planning on a real-world quadruped robot,
-      to reach a goal position in a terrain consisting of various obstacles. 
-      The quadruped has different walking modes, such as normal walking, walking on a slope, etc., 
-      each of which is modeled as a discrete mode in the hybrid system as shown in the following diagram:
-      </p>
+        <!-- HJ Reachability + Filtering -->
+        <h2>HJ Reachability and Safety Filtering</h2>
 
-      <table align=center width=600px>
-        <tr>
-            <td width=640px>
-              <center>
-                  <a href="resources\images\quad_diag_1_s.png"><img src ="resources\images\quad_diag_1_s.png"></img></href></a><br> 
-            </center>
-            </td>
-          </tr>
-      </table>
+        <p align='justify'>
+        To ensure provable safety, we use Hamilton-Jacobi (HJ) reachability analysis to compute the <i>safe set</i>—the set of all states from which the system can avoid entering unsafe regions (e.g., obstacles), despite worst-case disturbances. This is done by solving a differential game and computing a value function \( V(x) \), whose zero sublevel set defines the boundary of safety.
+        </p>
 
-      <p align='justify'>
-        Within each discrete mode, we use simplified continuous dynamics to describe center-of-mass evolution:
-      </p>
+        <p align='justify'>
+        From this value function, we can also derive a <i>safe control policy</i> \( u^*_{\text{safe}}(x) \) that guarantees the system remains within the safe set:
+        </p>
 
-      <p align='center'> 
-        \begin{equation*}
-        \dot{x} =k_x V_{N} \sin \varphi + d_x; \quad 
-        \dot{y} =k_y V_{N} \cos \varphi + d_y; \quad
-        \dot{\varphi} =k_{\omega} \omega_{N},
-        \end{equation*}
-      </p>
+        <p align='center'>
+        \[
+        u^*_{\text{safe}}(x) = \arg\max_{u \in U} \min_{d \in D} \nabla V(x) \cdot f(x, u, d)
+        \]
+        </p>
 
-      <p align="justify">
-        where the state \([x,y,\varphi]^T\) represent the \(xy\) position and heading angle of the robot. 
-        \(V_{N} = 0.25m/s\) is the fixed (normalized) linear velocity and \(\omega_{N} \in [-0.5, 0.5] rad/s\) 
-        is the angular velocity control. 
-        \(k_x\), \(k_y\), and \(k_{\omega}\) are velocity gains for different operation modes. 
-        \(d_x\) and \(d_y\) are bounded disturbances on \(xy\) velocity. Also, we use discrete state \([z,\theta,\xi]^T\)
-        to set the body's height, pitch, and roll angle in different operation modes for overcoming various obstacles. 
-      </p>
+        <p align='justify'>
+        We enforce this safety policy using a <b>Least Restrictive Filter (LRF)</b>: the system follows its nominal control unless it reaches the boundary of the safe set, in which case it switches to the safe control above. This guarantees constraint satisfaction without over-restricting performance. The following figure illustrates the filtering process, where the red trajectory follows a nominal unsafe control, and the blue trajectory the least restrictive filtered approach where unsafe actions are overriden in favour of safe controls when the system approaches the boundary of the unsafe region.
+        </p>
 
-      <p align="justify">
-        Each operation mode matches a specific obstacle or terrain in the testing area. The quadruped begins in 
-        mode \(q_1\) for fast walking. If the robot reaches the boundary of the slope area, the system will be forced 
-        to switch to mode \(q_2\) with a \(20^{\circ}\) body pitch angle for slope climbing. At some time, the control 
-        may switch to mode \(q_3\) to walk slowly with a lower body height, this allows the robot to make a narrow turn 
-        or crawl under obstacles. If the robot encounters a tilted obstacle, the system will go through a forced 
-        switch into mode \(q_4\) to walk with a tilted body. Whenever the robot touches a ground obstacle, the system 
-        will stay in mode \(q_5\) permanently with frozen dynamics.
-        The quadruped needs to reason about optimally switching between these different walking modes in order to 
-        reach its goal area (the area marked as the pink cylinder in following videos) as 
-        quickly as possible without colliding with any obstacles.
+        <center>
+            <img src="./resources/images/mppi_filter_v2.png" width="45%">
+        </center>
 
-        BRT for this experiment is calculated on a \([x,y,\varphi]\) grid of \([40,40,72]\) points, over a time horizon 
-        of \(t=45s\). 
-        Having the BRT, we can acquire optimal velocity control, operation mode, and the desired discrete body states
-        at each time. 
-        The quadruped is equipped with an Intel T265 tracking camera, allowing it to estimate its global state via 
-        visual-inertial odometry. 
-        The high-level optimal velocity control and discrete body states provided by our framework are then tracked 
-        by a low-level MPC controller that uses the centroidal dynamics of the quadruped.
-      </p>
+        <hr>
 
-      <p align="justify">
-        Our first experiment result is shown in the accompanying video.
-        In our environment setup, the optimal (fastest) route to reach the target is via leveraging the slope on
-        the right.
-        Specifically, the robot remains in the normal walking mode and switches to the slope walking mode once 
-        near the slope.
-        When the robot approaches the end of the slope, it needs to make a tight left turn to avoid a collision 
-        with the wall ahead. 
-        Our framework is able to recognize that and makes a transition to the slow walking mode to allow for a 
-        tighter turn. 
-        Once the turn is complete, the robot goes back in the faster walking mode.
-      </p>
+        <center><h1>DualGuard MPPI</h1></center>
 
-      <br>
-      <center>
-        <video width="640" height="360" controls>
-          <source src="./resources/videos/slope_1_w_traj_comp.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-        </video>
-      </center>
-      <br>
+        <p align='justify'>
+        While MPPI optimizes performance by sampling and refining control sequences, it does not guarantee safety as unsafe rollouts are penalized but still generated and discarded, wasting computation. Post-processing with safety filters can enforce constraints, but often sacrifices performance due to reactive corrections.
+        </p>
 
-      <p align="justify">
-        In our second experiment, we put some papers on the slope, making it more slippery. 
-        This is encoded by adding a higher disturbance in the slope mode \(q_2\). 
-        The new BRT makes the slope path infeasible and hence the robot needs to reach the target via 
-        the (slower) ground route.
-        Once again, apart from selecting a new safe route, the proposed framework is able to switch between 
-        different walking modes along the route to handle tight turns and slanted obstacles, as shown by the 
-        activation of the tilt walking mode. 
-      </p>
+        <p align='justify'>
+        DualGuard MPPI addresses this by embedding safety enforcement into the MPPI loop through two key steps:
+        </p>
 
-      <br>
-      <center>
-        <video width="640" height="360" controls>
-          <source src="./resources/videos/norm_1_w_traj_comp.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-        </video>
-      </center>
-      <br>
+        <ul>
+          <li><b>Safe Rollouts:</b> Each sampled control sequence is filtered with a safety controller before rollout, ensuring all trajectories are safe and usable. This improves sample efficiency and performance consistency.</li>
+          <li><b>Output Filtering:</b> After computing the optimal control sequence, we apply a final safety filter before execution. This guarantees that the applied command is safe, even in cases where safe trajectories are multimodal and might cancel each other out.</li>
+        </ul>
 
-      <p align="justify">
-        Finally, to test the closed-loop robustness of our method, we add human disturbance in the ground 
-        route experiment. 
-        The robot is kicked and dragged by a human during the locomotion process. 
-        Specifically, the robot was dragged to face backward, forcing it near the tilted obstacle. 
-        However, the reachability controller is able to ensure safety by reactivating the tilt walking 
-        mode, demonstrating that the proposed framework is able to reason 
-        about both closed-loop continuous and discrete control inputs.
-        Nevertheless, it should be emphasized that the presented algorithm does
-        not solve the entirety of legged locomotion planning, but
-        rather only provides the top level of a hierarchical planning architecture that typically include a 
-        robust footstep planner, a wholebody controller, and reliable state estimation.
-      </p>
+        <p align='justify'>
+        The full DualGuard MPPI algorithm combines both filtering layers into a provably safe and performant control strategy:
+        </p>
 
-      <br>
-      <center>
-        <video width="640" height="360" controls>
-          <source src="./resources/videos/norm_d_1_w_traj_comp.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-        </video>
-      </center>
-      <br>
+        <center>
+          <img src="./resources/images/alg_mppi_v2.png" width="45%">
+        </center>
 
-      <br>
-      <hr>
-      <center><h1>Discussion And Future Work</h1></center>
-      <br>
+        <hr>
 
+        <center><h1>Hardware Experiments – RC Car</h1></center>
 
-      <p align="justify">
-        We present an extension of the classical HJ reachability framework to hybrid dynamical systems with controlled 
-        and forced transitions, and state resets.
-        Along with the BRT, the proposed framework provides optimal continuous and discrete control inputs for the 
-        hybrid system.
+        <p align="justify">
+        We evaluate DualGuard MPPI on a miniature RC car executing aggressive laps around a physical racetrack. The car’s state \((x, y, \theta)\) evolves with the control input \(u = [V, \delta]\), where \(V \in [0.7, 1.4]\) m/s is the speed and \(\delta \in [-25^\circ, 25^\circ]\) is the steering angle. Disturbances \(d_x, d_y \in [-0.1, 0.1]\) capture model mismatch and sensor error:
+        </p>
 
-        Simulation studies and hardware experiments demonstrate the proposed method, both to reach goal areas and in 
-        maintaining safety.
-        Our work opens up several exciting future research directions. 
-        First, we rely on grid-based numerical methods to compute the BRT, whose computational complexity scales 
-        exponentially with the number of continuous states, limiting a direct use of our framework to relatively 
-        low-dimensional systems. We will explore recent advances in learning-based methods to solve HJI-VI 
-        to overcome this challenge. 
+        <p align="center">\(\dot{x} = V \cos(\theta) + d_x,\quad \dot{y} = V \sin(\theta) + d_y,\quad \dot{\theta} = \frac{V \tan(\delta)}{L}\)</p>
 
-        Another interesting direction would be to extend our framework to the cases involving uncertainty in the 
-        transition surface \(S_i\) or where controlled switches have different transition surfaces.
+        <p align="justify">
+        To reflect real-time performance, we report: <b>Computation Time</b> (ms per control update), <b>Speed</b> (average m/s over three laps), and <b>RelCost</b> (normalized performance cost). Safety-violating episodes are marked as failures. The cost function penalizes deviation from track center, lower speeds, and safety violations:
+        </p>
 
-        Finally, we will apply our framework on a broader range of robotics applications and systems.
-      </p>
-      <br>
-      <br> -->
+        <p align="center">\(S = (V_{max}-V)^2 + K_c (l_{center} - \phi(x)) + P(x)\)</p>
+
+        <p align="justify">
+        All methods were run at 50Hz using 1000 parallel rollouts per step on a laptop GPU (NVIDIA RTX 4060) using JAX. The value function and reachable set were precomputed using LevelSetToolbox[1].
+        </p>
+
+        <center>
+          <video width="100%" controls>
+            <source src="./resources/videos/dualguard_mppi_x4.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p><i>Video: Comparison of methods, x4 playback speed.</i></p>
+        </center>
+
+        <center>
+          <img src="./resources/images/dg_table_hw.png" width="60%">
+        </center>
+
+        <p align="justify">
+        DualGuard MPPI completes the track safely and aggressively, outperforming other safety-aware methods in speed and cost. Unfiltered methods fail on tight turns despite high penalty weights, highlighting the importance of hard safety constraints. Our safe rollout stage improves sample quality, while the final filtering ensures guaranteed safety—even in multimodal scenarios. All methods remain under the 20ms compute budget.
+        </p>
+
+        <p align="justify">
+        While the benefits of guaranteed safety are clearly visible in the hardware results, the improvements in sample efficiency introduced by our safe rollout mechanism are harder to observe in this single-task setting. These advantages along with broader comparisons and formulation details are thoroughly explored in the full paper linked at the top of this page.
+        </p>
+
 
       <hr>
       
